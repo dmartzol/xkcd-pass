@@ -19,7 +19,7 @@ var (
 	wordCount      int
 	maxWordLength  int
 	minWordLength  int
-	info           bool
+	verbose        bool
 )
 
 func init() {
@@ -29,7 +29,7 @@ func init() {
 	flag.IntVar(&wordCount, "c", 4, "number of words to use")
 	flag.IntVar(&maxWordLength, "M", 5, "max word length")
 	flag.IntVar(&minWordLength, "m", 2, "min word length")
-	flag.BoolVar(&info, "i", false, "logs information on screen")
+	flag.BoolVar(&verbose, "v", false, "logs information on screen")
 }
 
 func PrintDefaultsWithError(errorMessage string) {
@@ -95,7 +95,7 @@ func main() {
 	}
 
 	fmt.Printf("%v", strings.Join(chosenWords, "-"))
-	if info {
+	if verbose {
 		fmt.Println()
 		fmt.Printf("all words %v\n", len(allWords))
 		fmt.Printf("sample space %v\n", len(validWords))
