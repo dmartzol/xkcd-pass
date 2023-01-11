@@ -18,15 +18,13 @@ var (
 )
 
 func init() {
-	flag.StringVar(&dictionaryPath, "d", "", "input dictionry path")
 	flag.StringVar(&wordLanguage, "l", "", "language")
 	flag.IntVar(&wordCount, "c", 4, "number of words to use")
-	//flag.IntVar(&iterations, "n", 1000, "number of iterations")
 }
 
 func PrintDefaultsWithError(errorMessage string) {
 	log.Printf("invalid input parameters: %v", errorMessage)
-	fmt.Println("Usage: poly [OPTIONS] -o output")
+	fmt.Println("Usage: xkcd-pass [OPTIONS]")
 	flag.PrintDefaults()
 	os.Exit(1)
 }
