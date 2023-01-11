@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math"
 	"math/rand"
 	"os"
 	"strings"
@@ -16,7 +17,9 @@ var (
 	wordLanguage   string
 	separator      string
 	wordCount      int
-	wordLength     int
+	maxWordLength  int
+	minWordLength  int
+	info           bool
 )
 
 func init() {
@@ -24,7 +27,9 @@ func init() {
 	flag.StringVar(&wordLanguage, "l", "en", "language")
 	flag.StringVar(&separator, "s", "-", "separator")
 	flag.IntVar(&wordCount, "c", 4, "number of words to use")
-	flag.IntVar(&wordLength, "x", 6, "max word length")
+	flag.IntVar(&maxWordLength, "M", 5, "max word length")
+	flag.IntVar(&minWordLength, "m", 2, "min word length")
+	flag.BoolVar(&info, "i", false, "logs information on screen")
 }
 
 func PrintDefaultsWithError(errorMessage string) {
@@ -40,11 +45,20 @@ func main() {
 	if wordCount <= 0 {
 		PrintDefaultsWithError("number of words should be > 0")
 	}
+	if maxWordLength <= 0 {
+		PrintDefaultsWithError("max word length must be > 0")
+	}
+	if minWordLength <= 0 {
+		PrintDefaultsWithError("min word length must be > 0")
+	}
+	if !(minWordLength < maxWordLength) {
+		PrintDefaultsWithError("min word length must be lower than max word length")
+	}
 	if dictionaryPath == "" {
 		PrintDefaultsWithError("dictionary path is required")
 	}
 
-	// chose a wordList
+	// read word list from file
 	file, err := os.Open(dictionaryPath)
 	if err != nil {
 		log.Fatalf("unable to open file: %v", err)
@@ -55,16 +69,37 @@ func main() {
 	if err != nil {
 		log.Fatalf("unable to read file: %v", err)
 	}
-	wordList := strings.Split(string(content), "\n")
+	allWords := strings.Split(string(content), "\n")
 
+	// selecting first only valid words
+	var validWords []string
+	for _, candidate := range allWords {
+		if len(candidate) < minWordLength {
+			continue
+		}
+		if len(candidate) > maxWordLength {
+			continue
+		}
+		validWords = append(validWords, candidate)
+	}
+
+	// seeding with random number
 	randomSeed := time.Now().UTC().UnixNano()
 	rand.Seed(randomSeed)
 
-	var words []string
+	// selecting the words that we will use in the password
+	var chosenWords []string
 	for i := 0; i < wordCount; i++ {
-		randomIndex := rand.Intn(len(wordList))
-		words = append(words, wordList[randomIndex])
+		randomIndex := rand.Intn(len(validWords))
+		chosenWords = append(chosenWords, validWords[randomIndex])
 	}
 
-	fmt.Printf("%v\n", strings.Join(words, "-"))
+	fmt.Printf("%v", strings.Join(chosenWords, "-"))
+	if info {
+		fmt.Println()
+		fmt.Printf("all words %v\n", len(allWords))
+		fmt.Printf("sample space %v\n", len(validWords))
+		entropy := float64(wordCount) * math.Log2(float64(len(validWords)))
+		fmt.Printf("entropy %v\n", math.Round(entropy))
+	}
 }
