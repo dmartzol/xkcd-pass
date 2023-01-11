@@ -6,19 +6,21 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/dmartzol/xkcd-pass/wordlists"
 )
 
 var (
-	dictionaryPath string
-	wordLanguage   string
-	wordCount      int
+	wordLanguage string
+	separator    string
+	wordCount    int
 )
 
 func init() {
-	flag.StringVar(&wordLanguage, "l", "", "language")
+	flag.StringVar(&wordLanguage, "l", "en", "language")
+	flag.StringVar(&separator, "s", "-", "separator")
 	flag.IntVar(&wordCount, "c", 4, "number of words to use")
 }
 
@@ -37,7 +39,7 @@ func main() {
 	}
 
 	// chose a wordList
-	wordList, ok := wordlists.Wordlists["en"]
+	wordList, ok := wordlists.Wordlists[wordLanguage]
 	if !ok {
 		log.Fatalf("list not found")
 	}
@@ -50,5 +52,6 @@ func main() {
 		randomIndex := rand.Intn(len(wordList))
 		words = append(words, wordList[randomIndex])
 	}
-	fmt.Printf("%v-%v\n", words[0], words[1])
+
+	fmt.Printf("%v\n", strings.Join(words, "-"))
 }
