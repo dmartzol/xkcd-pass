@@ -80,6 +80,7 @@ func main() {
 		if len(candidate) > maxWordLength {
 			continue
 		}
+		candidate = strings.ToLower(candidate)
 		validWords = append(validWords, candidate)
 	}
 
