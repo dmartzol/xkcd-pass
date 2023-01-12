@@ -14,7 +14,6 @@ import (
 
 var (
 	dictionaryPath string
-	wordLanguage   string
 	separator      string
 	wordCount      int
 	maxWordLength  int
@@ -23,8 +22,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&dictionaryPath, "d", "en", "path to file with dictionary of words")
-	flag.StringVar(&wordLanguage, "l", "en", "language")
+	flag.StringVar(&dictionaryPath, "d", "", "path to file with dictionary of words")
 	flag.StringVar(&separator, "s", "-", "separator")
 	flag.IntVar(&wordCount, "c", 4, "number of words to use")
 	flag.IntVar(&maxWordLength, "M", 5, "max word length")
