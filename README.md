@@ -16,5 +16,5 @@ Usage: xkcd-pass [OPTIONS]
     	min word length (default 2)
   -s string
     	separator (default "-")
-  -v	logs information on screen
+  -v	logs password strength information on screen
 ```
