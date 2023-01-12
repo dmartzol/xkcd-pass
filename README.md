@@ -33,7 +33,7 @@ xkcd-pass -d ~/code/xkcd-pass/wordlists/es.txt
 casta-giben-crino-ver
 ```
 
-If you use the options `-v` you can see the password entropy:
+If you use the option `-v` you can see the password entropy:
 ```
 xkcd-pass -d ~/code/xkcd-pass/wordlists/es.txt -v
 paxte-apuno-canse-dure
