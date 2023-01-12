@@ -30,7 +30,7 @@ Usage: xkcd-pass [OPTIONS]
 By default uses 4 words between 2 and 5 characters.
 ```
 xkcd-pass -d ~/code/xkcd-pass/wordlists/es.txt 
-casta-giben-crino-ver⏎ 
+casta-giben-crino-ver
 ```
 
 If you use the options `-v` you can see the password entropy:
